@@ -1,0 +1,22 @@
+{
+  "name": "carnationweatherinfo",
+  "version": "1.0.0",
+  "description": "an app that combines actual weather info for Carnation WA, including illumination",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usoskialex/CarnationWeatherInfo.git"
+  },
+  "author": "Alex Usoski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/usoskialex/CarnationWeatherInfo/issues"
+  },
+  "homepage": "https://github.com/usoskialex/CarnationWeatherInfo#readme",
+  "dependencies": {
+    "puppeteer": "^22.7.1"
+  }
+}
