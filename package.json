@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "carnationweatherinfo",
   "version": "1.0.0",
   "description": "an app that combines actual weather info for Carnation WA, including illumination",
