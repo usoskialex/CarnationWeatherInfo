@@ -21,17 +21,35 @@ const screenshotSaver = async () => {
     await browser.close();
 }
 
+function calculateAvg(arr) {
+    let sumOfTemp = 0;
+    arr.forEach(temp =>{
+        sumOfTemp = sumOfTemp + temp;
+    })
+
+    return sumOfTemp / arr.length;
+}
+
 const retreiveWeather = async () => {
     dotenv.config();
-
     const apiKey = process.env.API_KEY;
+    const executionHoursTempArr = [];
     const weatherData = await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
         res.data.days.forEach(day => {
             const sunset = day.sunset;
             const today = getTime();
             // Loop through each hour object within the hours array
-            const executionHoursData = day.hours.filter(hour => ((hour.datetime >= sunset && day.datetime === today) || (hour.datetime <= '02:00:00' && day.datetime !== today))).map(hour => ({
+            const executionHoursData = day.hours.filter(hour => {
+                const isToday = day.datetime === today;
+                const isAfterSunset = hour.datetime >= sunset;
+                const isBefore2AM = hour.datetime <= '02:00:00';
+                if ((isToday && isAfterSunset) || (!isToday && isBefore2AM)) {
+                    executionHoursTempArr.push(hour.temp); // Push the temperature value at the current hour
+                    return true; // Keep this hour
+                }
+                return false; // Filter out this hour
+            }).map(hour => ({
                 day: day.datetime,
                 datetime: hour.datetime,
                 temp: hour.temp,
@@ -39,7 +57,6 @@ const retreiveWeather = async () => {
                 visibility: hour.visibility,
                 conditions: hour.conditions
             }));
-            //console.log(executionHoursTemp)
             console.log(executionHoursData)
             return executionHoursData;
         });
@@ -47,10 +64,8 @@ const retreiveWeather = async () => {
     .catch(err =>{
         console.log(err)
     });
-    return weatherData;
+    return weatherData, executionHoursTempArr;
 }
-console.log(getTime());
-//retreiveWeather();
-//screenshotSaver();
 
-retreiveWeather();
+//screenshotSaver();
+//retreiveWeather();
