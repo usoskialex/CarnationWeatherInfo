@@ -34,6 +34,7 @@ const retreiveWeather = async () => {
     dotenv.config();
     const apiKey = process.env.API_KEY;
     const executionHoursTempArr = [];
+
     const weatherData = await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
         res.data.days.forEach(day => {
@@ -58,14 +59,15 @@ const retreiveWeather = async () => {
                 conditions: hour.conditions
             }));
             console.log(executionHoursData)
+            console.log(executionHoursTempArr)
             return executionHoursData;
         });
     })
     .catch(err =>{
         console.log(err)
     });
-    return weatherData, executionHoursTempArr;
+    return weatherData, calculateAvg(executionHoursTempArr);
 }
 
 //screenshotSaver();
-//retreiveWeather();
+retreiveWeather();
