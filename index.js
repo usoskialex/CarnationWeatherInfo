@@ -1,6 +1,10 @@
-import puppeteer from "puppeteer";
-import axios from "axios";
-import dotenv from 'dotenv';
+const puppeteer = require("puppeteer");
+const axios = require("axios");
+const dotenv = require('dotenv');
+
+const express = require('express');
+const app = express();
+const port = 3000;
 
 function getTime(){
     const currentDate = new Date();
@@ -34,8 +38,9 @@ const retreiveWeather = async () => {
     dotenv.config();
     const apiKey = process.env.API_KEY;
     const executionHoursTempArr = [];
+    const executionDays = [];
 
-    const weatherData = await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?unitGroup=us&key=${apiKey}&contentType=json`)
+    await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
         res.data.days.forEach(day => {
             const sunset = day.sunset;
@@ -58,16 +63,29 @@ const retreiveWeather = async () => {
                 visibility: hour.visibility,
                 conditions: hour.conditions
             }));
-            console.log(executionHoursData)
-            console.log(executionHoursTempArr)
-            return executionHoursData;
-        });
+            executionDays.push(executionHoursData);
+            return executionDays;
+        }); 
     })
     .catch(err =>{
         console.log(err)
     });
-    return weatherData, calculateAvg(executionHoursTempArr);
+
+    const weatherCard = {
+        "ExecutionDays": executionDays,
+        "Average Temperature": calculateAvg(executionHoursTempArr)
+    }
+    return weatherCard;
 }
 
 //screenshotSaver();
-retreiveWeather();
+const weatherResult = retreiveWeather();
+
+app.get('/', async (req, res) => {
+    const result = await weatherResult;
+    res.json(result);
+});
+  
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+});
