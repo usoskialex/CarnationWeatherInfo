@@ -2,10 +2,6 @@ const puppeteer = require("puppeteer");
 const axios = require("axios");
 const dotenv = require('dotenv');
 
-const express = require('express');
-const app = express();
-const port = 3000;
-
 function getTime(){
     const currentDate = new Date();
     const year = currentDate.getFullYear(); 
@@ -81,11 +77,4 @@ const retreiveWeather = async () => {
 //screenshotSaver();
 const weatherResult = retreiveWeather();
 
-app.get('/', async (req, res) => {
-    const result = await weatherResult;
-    res.json(result);
-});
-  
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+module.exports = {weatherResult}

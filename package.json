@@ -5,7 +5,7 @@
   "description": "an app that combines actual weather info for Carnation WA, including illumination",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/usoskialex/CarnationWeatherInfo#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
     "puppeteer": "^22.7.1"
