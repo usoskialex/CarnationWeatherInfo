@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#cardTitle {
+    font-size: 2rem;
+    color: black;
+    text-align: center;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+.card {
+    width: fit-content;
+    font-family: monospace;
+    color: #fff;
+    margin: 4rem auto 0;
+    justify-content: space-between;
+}
+
+.dayInfo {
+    background: linear-gradient(135deg, #307662, #31561f);
+    border-radius: 2rem;
+    box-shadow:  2.4px 3.2px 5.3px -20px rgba(102, 191, 101, 0.085),
+                 8px 10.7px 17.6px -20px rgba(0, 0, 0, 0.125),
+                36px 48px 79px -20px rgba(0, 0, 0, 0.21);
+    margin: 0.3rem;
+    padding: 0.5rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.date-time-format {
+    font-size: 70%;
+}
+
+#weather-date, #weather-time {
+    display: table-cell;
+    padding: 0 2rem 2rem 2rem;
+}
+
+#weather-conditions {
+    display: block;
+    font-size: 70%;
+    padding-top: 1rem;
+}
+
+#weather-average {
+    justify-self: center;
+    color: black;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    * {
+        text-align: center;
+    }
+    #cardTitle {
+        font-size:2rem;
+    }
+
+    .wrapper {
+        display: block;
+    }
+
+    .dayInfo {
+        font-size: 2rem;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    .dayInfo {
+        font-size: 1.5rem;
+    }
+}
