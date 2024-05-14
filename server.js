@@ -12,22 +12,27 @@ app.get('/', async (req, res) => {
     const result = await script.weatherResult;
     const executionDays = result.ExecutionDays;
 
-    let html = '<ul>'; // Start an unordered list
+    let html = '<div class="wrapper">';
 
     // Iterate over each execution day array
     executionDays.forEach(dayArray => {
         dayArray.forEach(day => {
-            html += `<li>Date: ${day.day}, Time: ${day.datetime}, Temperature: ${day.temp}, Humidity: ${day.humidity}, Visibility: ${day.visibility}, Conditions: ${day.conditions}</li>`;
+            html +=
+            `
+             <div class="dayInfo">
+                <p  id="weather-date"><span class="date-time-format">Date: ${day.day}</span></p>
+                <p  id="weather-time"><span class="date-time-format">Time: ${day.datetime}</span></p>
+                <p  id="weather-temp">Temperature: ${day.temp}&#8457;</p>
+                <p  id="weather-humidity">Humidity: ${day.humidity}%</p>
+                <p  id="weather-visibility">Visibility: ${day.visibility}m</p>
+                <p  id="weather-conditions">Conditions: ${day.conditions}</p>
+             </div>`;
         });
     });
-
-    html += '</ul>'; // Close the unordered list
-
-    // Add the average temperature to the HTML
-    html += `<p>Average Temperature: ${result['Average Temperature']}</p>`;
-
+    html += '</div>';
+    html += `<p id="weather-average">Average Temperature: ${result['Average Temperature']}&#8457;</p>`;
+    html += `<p id="weather-average">Average Condition: ${result['Average Condition']}</p>`
     // Send the HTML to the browser
-    //const data = res.send(html);
     res.render('index', { data: html });
 });
   

@@ -30,13 +30,31 @@ function calculateAvg(arr) {
     return sumOfTemp / arr.length;
 }
 
+function averageCondition(arr) {
+    const conditionsTracker = {};
+    let requiredCondition = "";
+    let highest = 0;
+
+    arr.forEach(el => {
+        conditionsTracker[el] = (conditionsTracker[el] || 0) + 1;
+    })
+    for (const cond in conditionsTracker) {
+        if (conditionsTracker[cond] > highest) {
+            highest = conditionsTracker[cond];
+            requiredCondition = cond;
+        }
+    }
+    return requiredCondition;
+}
+
 const retreiveWeather = async () => {
     dotenv.config();
     const apiKey = process.env.API_KEY;
     const executionHoursTempArr = [];
     const executionDays = [];
+    const conditionsArr = [];
 
-    await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?unitGroup=us&key=${apiKey}&contentType=json`)
+    await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?&unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
         res.data.days.forEach(day => {
             const sunset = day.sunset;
@@ -48,7 +66,8 @@ const retreiveWeather = async () => {
                 const isBefore2AM = hour.datetime <= '02:00:00';
                 if ((isToday && isAfterSunset) || (!isToday && isBefore2AM)) {
                     executionHoursTempArr.push(hour.temp); // Push the temperature value at the current hour
-                    return true; // Keep this hour
+                    conditionsArr.push(hour.conditions);
+                    return true; // Keep this hour & conditions
                 }
                 return false; // Filter out this hour
             }).map(hour => ({
@@ -69,7 +88,8 @@ const retreiveWeather = async () => {
 
     const weatherCard = {
         "ExecutionDays": executionDays,
-        "Average Temperature": calculateAvg(executionHoursTempArr)
+        "Average Temperature": calculateAvg(executionHoursTempArr).toFixed(1),
+        "Average Condition": averageCondition(conditionsArr)
     }
     return weatherCard;
 }
