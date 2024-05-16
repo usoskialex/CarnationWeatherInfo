@@ -33,7 +33,7 @@ app.get('/', async (req, res) => {
     html += `<p id="weather-average">Average Temperature: ${result['Average Temperature']}&#8457;</p>`;
     html += `<p id="weather-average">Average Condition: ${result['Average Condition']}</p>`
     // Send the HTML to the browser
-    res.render('index', { data: html });
+    res.render('../views/index', { data: html });
 });
   
 app.listen(port, () => {
