@@ -1,4 +1,4 @@
-const script = require('../routes/script')
+const script = require('./script')
 
 const express = require('express');
 const path = require('path');
