@@ -5,9 +5,8 @@ const path = require('path');
 const app = express();
 const port = 8080;
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', './views')
-console.log(path.join(__dirname, 'views'));
+app.use(express.static('public'));
+app.set('views', 'api/views')
 app.set("view engine", "ejs");
 
 
@@ -38,7 +37,7 @@ app.get('/', async (req, res) => {
         html += `<p id="weather-average">Average Temperature: ${result['Average Temperature']}&#8457;</p>`;
         html += `<p id="weather-average">Average Condition: ${result['Average Condition']}</p>`
         // Send the HTML to the browser
-        res.render('index', { data: html });
+        res.render('', { data: html });
     } catch (error) {
         console.error('Error rendering index:', error);
         res.status(500).send('Internal Server Error');
