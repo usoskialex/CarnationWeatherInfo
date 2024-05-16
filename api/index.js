@@ -1,9 +1,9 @@
-const script = require('./routes/script')
+const script = require('../routes/script')
 
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("view engine", "ejs");
@@ -39,3 +39,5 @@ app.get('/', async (req, res) => {
 app.listen(port, () => {
     console.log(`Weather app listening on port ${port}`);
 });
+
+export default app;

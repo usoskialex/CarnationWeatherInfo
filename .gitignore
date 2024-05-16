@@ -6,3 +6,4 @@ node_modules/
 .secret
 Thumbs.db          \
          
+.vercel
