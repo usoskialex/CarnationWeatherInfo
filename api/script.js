@@ -11,15 +11,15 @@ function getTime(){
     return requiredTime;
 }
 
-const screenshotSaver = async () => {
-    const screenshotUrl = "https://www.google.com/search?q=weather+google+carnation+wa";
-    const screenshotName = getTime();
-    const browser = await puppeteer.launch();
-    const webPage = await browser.newPage();
-    await webPage.goto(screenshotUrl);
-    await webPage.screenshot({path: `screenshoot/${screenshotName}.jpg`});    
-    await browser.close();
-}
+// const screenshotSaver = async () => {
+//     const screenshotUrl = "https://www.google.com/search?q=weather+google+carnation+wa";
+//     const screenshotName = getTime();
+//     const browser = await puppeteer.launch();
+//     const webPage = await browser.newPage();
+//     await webPage.goto(screenshotUrl);
+//     await webPage.screenshot({path: `screenshoot/${screenshotName}.jpg`});    
+//     await browser.close();
+// }
 
 function calculateAvg(arr) {
     let sumOfTemp = 0;
@@ -54,8 +54,12 @@ const retreiveWeather = async () => {
     const executionDays = [];
     const conditionsArr = [];
 
+    console.log('Fetching weather data...');
+    console.log('Date used for API request:', getTime());
+
     await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/47.66789207038801,-121.93391247914877/today/tomorrow?&unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
+        console.log('Raw API response data:', res.data);
         res.data.days.forEach(day => {
             const sunset = day.sunset;
             const today = getTime();
@@ -79,6 +83,7 @@ const retreiveWeather = async () => {
                 conditions: hour.conditions
             }));
             executionDays.push(executionHoursData);
+            console.log('Filtered execution hours data:', executionHoursData);
             return executionDays;
         }); 
     })
@@ -94,7 +99,6 @@ const retreiveWeather = async () => {
     return weatherCard;
 }
 
-//screenshotSaver();
 const weatherResult = retreiveWeather();
 
 module.exports = {weatherResult}
