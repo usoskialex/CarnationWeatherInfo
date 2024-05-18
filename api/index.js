@@ -6,7 +6,7 @@ const app = express();
 const port = 8080;
 
 app.use(express.static('public'));
-app.set('views', 'api/views')
+app.set('views', 'views');
 app.set("view engine", "ejs");
 
 

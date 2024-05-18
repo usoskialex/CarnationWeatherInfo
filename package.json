@@ -5,7 +5,7 @@
   "description": "an app that combines actual weather info for Carnation WA, including illumination",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node api/index.js",
     "build": ""
   },
   "repository": {
