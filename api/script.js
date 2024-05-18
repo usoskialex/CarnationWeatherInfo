@@ -54,7 +54,7 @@ const retreiveWeather = async () => {
     const executionDays = [];
     const conditionsArr = [];
 
-    await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Carnation%2C%20WA/today/tomorrow?&unitGroup=us&key=${apiKey}&contentType=json`)
+    await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/47.66789207038801,-121.93391247914877/today/tomorrow?&unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
         res.data.days.forEach(day => {
             const sunset = day.sunset;
