@@ -1,25 +1,14 @@
-const puppeteer = require("puppeteer");
 const axios = require("axios");
 const dotenv = require('dotenv');
 
 function getTime(){
     const currentDate = new Date();
-    const year = currentDate.getFullYear(); 
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Adding leading zero so the format matches the response from API call
-    const day = currentDate.getDate().toString().padStart(2, '0');
+    const format = { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' };
+    const pstTime = currentDate.toLocaleString('en-US', format);
+    const [month, day, year] = pstTime.split('/');
     const requiredTime = `${year}-${month}-${day}`;
     return requiredTime;
 }
-
-// const screenshotSaver = async () => {
-//     const screenshotUrl = "https://www.google.com/search?q=weather+google+carnation+wa";
-//     const screenshotName = getTime();
-//     const browser = await puppeteer.launch();
-//     const webPage = await browser.newPage();
-//     await webPage.goto(screenshotUrl);
-//     await webPage.screenshot({path: `screenshoot/${screenshotName}.jpg`});    
-//     await browser.close();
-// }
 
 function calculateAvg(arr) {
     let sumOfTemp = 0;
@@ -54,26 +43,22 @@ const retreiveWeather = async () => {
     const executionDays = [];
     const conditionsArr = [];
 
-    console.log('Fetching weather data...');
-    console.log('Date used for API request:', getTime());
-
     await axios.get(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/47.66789207038801,-121.93391247914877/today/tomorrow?&unitGroup=us&key=${apiKey}&contentType=json`)
     .then(res => {
-        console.log('Raw API response data:', res.data);
         res.data.days.forEach(day => {
             const sunset = day.sunset;
             const today = getTime();
-            // Loop through each hour object within the hours array
+            
             const executionHoursData = day.hours.filter(hour => {
                 const isToday = day.datetime === today;
                 const isAfterSunset = hour.datetime >= sunset;
                 const isBefore2AM = hour.datetime <= '02:00:00';
                 if ((isToday && isAfterSunset) || (!isToday && isBefore2AM)) {
-                    executionHoursTempArr.push(hour.temp); // Push the temperature value at the current hour
+                    executionHoursTempArr.push(hour.temp); 
                     conditionsArr.push(hour.conditions);
-                    return true; // Keep this hour & conditions
+                    return true; 
                 }
-                return false; // Filter out this hour
+                return false; 
             }).map(hour => ({
                 day: day.datetime,
                 datetime: hour.datetime,
@@ -83,7 +68,6 @@ const retreiveWeather = async () => {
                 conditions: hour.conditions
             }));
             executionDays.push(executionHoursData);
-            console.log('Filtered execution hours data:', executionHoursData);
             return executionDays;
         }); 
     })
